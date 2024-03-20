@@ -234,17 +234,26 @@ function startGame()
 // Function to restart the game after collision
 function restartGame()
 {
-    resetScores();
-    clearInterval(gameInterval);
+    updateHighestScore();
+    stopGame();
     gameRestarted = true;
+    instructionText.innerText = "Press Enter key to restart the game";
+    snake = [ {x: 1 , y: 1} ];
+    direction = "right";
+    foodPosition = generateRandomFoodPosition();
+    gameSpeedDelay = 500;
+    updateCurrentScore();
+}
+
+
+// Function to stop game after collision
+function stopGame()
+{
+    clearInterval(gameInterval);
     gameStatus = "Not Started";
     gameBoard.innerHTML = '';
     instructionText.style.display = "block";
-    instructionText.innerText = "Press Enter key to restart the game";
     logo.style.display = "block";
-    snake = [ {x: 1 , y: 1} ];
-    direction = "right";
-    gameSpeedDelay = 500;
 }
 
 // Function to update the current score on food consumption
@@ -254,16 +263,11 @@ function updateCurrentScore()
     currentScore.textContent = currentScoreValue.toString().padStart(3 , '0');
 }
 
-// Function to reset the scores on game restart
-function resetScores()
+// function to update the highest score on game reset
+function updateHighestScore()
 {
-    // console.log(snake);
     let currentScoreValue = snake.length - 1;
-    // console.log(currentScoreValue);
-    highestScoreValue = Math.max(highestScoreValue , currentScoreValue);
-    // console.log(highestScoreValue);
-    currentScoreValue = 0;
-    currentScore.textContent = currentScoreValue.toString().padStart(3 , '0');
+    highestScoreValue = Math.max(currentScoreValue , highestScoreValue);
     highestScore.textContent = highestScoreValue.toString().padStart(3 , '0');
     highestScore.style.display = "block";
 }
